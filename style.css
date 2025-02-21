@@ -1,0 +1,40 @@
+:root {
+  --bgColor: black;
+  --keyWhite: hsl(0, 0%, 30%);
+  --keyBlack: hsl(0, 0%, 18%);
+  --posColor: hsl(120, 73%, 75%);
+  --negColor: hsl(0, 73%, 70%);
+
+  background-color: var(--bgColor);
+  color: hsl(0, 0%, 90%);
+  font-family: system-ui;
+}
+
+#chordArea {
+  font-size: 30pt;
+  margin: 1em;
+}
+button {
+  background: none;
+  border: none;
+  font-size: inherit;
+}
+
+.whiteKey, .blackKey {
+  stroke: var(--bgColor);
+  stroke-width: 2;
+}
+.whiteKey {
+  fill: var(--keyWhite);
+}
+.blackKey {
+  fill: var(--keyBlack);
+}
+
+.key[data-pressed="pos"] {
+  fill: var(--posColor) !important;
+}
+
+.key[data-pressed="neg"] {
+  fill: var(--negColor) !important;
+}
