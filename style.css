@@ -18,6 +18,7 @@ button {
   background: none;
   border: none;
   font-size: inherit;
+  cursor: pointer;
 }
 
 .whiteKey, .blackKey {
