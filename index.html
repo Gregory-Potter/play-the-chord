@@ -8,6 +8,7 @@
   <title>Play-The-Chord</title>
 </head>
 <body onload="initialize()">
+  <button id="iButton" onclick="document.getElementById('instructions').showModal()">ⓘ</button>
   <div id="chordArea">
     <span id="chordPrompt" onclick="getRandomChord()"></span>
   </div>
@@ -120,35 +121,24 @@
     </g>
   </svg>
   <div id="info">
-    <p>
-      Some form of MIDI input is required for entering the chord. You can press <kbd>Space</kbd> or click on the current chord prompt to get a new random chord.
-    </p>
-
     <div id="options">
-      <fieldset>
+      <fieldset id="lettersOptions">
+        <legend>Root Letters</legend>
+      </fieldset>
+      <fieldset id="accidentalsOptions">
         <legend>Root Accidentals</legend>
-        <span class="option">
-          <input type="checkbox" id="naturals" value="2" oninput="updateSelectedAccidentals(event)" checked>
-          <label for="naturals">♮ Naturals</label>
-        </span>
-        <span class="option">
-          <input type="checkbox" id="flats" value="3" oninput="updateSelectedAccidentals(event)" checked>
-          <label for="flats">♭ Flats</label>
-        </span>
-        <span class="option">
-          <input type="checkbox" id="sharps" value="1" oninput="updateSelectedAccidentals(event)" checked>
-          <label for="sharps">♯ Sharps</label>
-        </span>
-        <span class="option">
-          <input type="checkbox" id="doubleflats" value="4" oninput="updateSelectedAccidentals(event)">
-          <label for="doubleflats">𝄫 Double-Flats</label>
-        </span>
-        <span class="option">
-          <input type="checkbox" id="doublesharps" value="0" oninput="updateSelectedAccidentals(event)">
-          <label for="doublesharps">𝄪 Double-Sharps</label>
-        </span>
+      </fieldset>
+      <fieldset id="qualitiesOptions">
+        <legend>Chord Qualities</legend>
       </fieldset>
     </div>
   </div>
+
+  <dialog id="instructions">
+    <p>
+      Some form of MIDI input is required for entering the chord. You can press <kbd>Space</kbd> or click on the current chord prompt to get a new random chord. Correct notes will turn <span class="posColor">green</span>, and incorrect notes will turn <span class="negColor">red</span>.
+    </p>
+    <button onclick="document.getElementById('instructions').close()">Ok</button>
+  </dialog>
 </body>
 </html>

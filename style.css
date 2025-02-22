@@ -50,15 +50,6 @@
   fill: var(--negColor) !important;
 }
 
-#info {
-  width: clamp(40%, 20rem, 100%);
-  padding-inline: 1em;
-  margin-inline: auto;
-  border-inline: 2px solid var(--keyBlack);
-  color: var(--infoColor);
-  font-weight: lighter;
-}
-
 .selections {
   display: inline-block;
   min-width: fit-content;
@@ -79,34 +70,84 @@ kbd {
   padding-block: 0.1em;
 }
 
+button {
+  display: block;
+  margin-inline: auto;
+  background-color: var(--keyBlack);
+  color: var(--infoColor);
+  border: 1px solid var(--keyWhite);
+  border-radius: 0.5em;
+  padding-block: 0.3em;
+  padding-inline: 0.5em;
+}
+#iButton {
+  position: absolute;
+  top: 9.5rem;
+  left: 50%;
+  translate: -50%;
+  margin: 0;
+  border-radius: 50%;
+  font-family: serif;
+  font-size: large;
+  padding-block: 0;
+  padding-inline: 0.25em;
+}
+
+dialog {
+  position: fixed;
+  margin: 0;
+  top: 30%;
+  left: 50%;
+  width: clamp(15em, 60%, 35em);
+  translate: -50% -50%;
+  background-color: var(--bgColor);
+  color: var(--infoColor);
+  border: 1px solid var(--keyWhite);
+  border-radius: 0.5em;
+}
+dialog::backdrop {
+  background-color: hsla(0, 0%, 0%, 0.5);
+}
+body:has(dialog[open]) {
+  filter: blur(3px);
+}
+
 #options {
-  line-height: 2;
+  width: clamp(12rem, 90%, 35rem);
+  padding-inline: 1em;
+  margin-inline: auto;
+  color: var(--infoColor);
+  font-weight: lighter;
 }
 
 fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1em;
   margin-block: 1em;
   margin-inline: 0;
-  padding-block: 0;
-  padding-inline: 0.5em;
+  padding: 0.5em;
   border: 1px solid var(--keyBlack);
   border-radius: 0.5em;
-  text-align: center;
 }
 legend {
   font-weight: normal;
+  text-align: center;
 }
 
 .option {
   white-space: nowrap;
-  margin-right: 1em;
 }
-.option > input,
-.option > label {
+.option > input {
   cursor: pointer;
+}
+.option > input[disabled] {
+  cursor: not-allowed;
 }
 
 input[type="checkbox"] {
-  margin-inline: 0;
+  margin-left: 0;
 }
 
 input[type="color" i] {
@@ -128,4 +169,20 @@ input[type="color" i]::-webkit-color-swatch-wrapper {
 input[type="color" i]::-webkit-color-swatch,
 input[type="color" i]::-moz-color-swatch {
   border-radius: 5%;
+}
+
+.posColor {
+  color: var(--posColor);
+}
+.negColor {
+  color: var(--negColor);
+}
+
+#lettersOptions{
+  max-width: 20em;
+  margin-inline: auto;
+}
+#accidentalsOptions {
+  max-width: 17.5em;
+  margin-inline: auto;
 }
