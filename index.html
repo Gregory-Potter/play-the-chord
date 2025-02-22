@@ -2,14 +2,14 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./style.css">
   <script src="main.js"></script>
   <title>Play-The-Chord</title>
 </head>
 <body onload="initialize()">
   <div id="chordArea">
-    <button onclick="getRandomChord()">🎲</button>
-    <span id="chordPrompt"></span>
+    <span id="chordPrompt" onclick="getRandomChord()"></span>
   </div>
   <svg width="100%" height="100%" viewBox="0 0 1218 120" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
     <g id="Octave0">
@@ -119,5 +119,36 @@
         <path id="n108" data-name="C8" class="key whiteKey" d="M1218,0L1195,0L1195,117C1195,117.796 1195.32,118.559 1195.88,119.121C1196.44,119.684 1197.2,120 1198,120C1202.41,120 1210.59,120 1215,120C1215.8,120 1216.56,119.684 1217.12,119.121C1217.68,118.559 1218,117.796 1218,117C1218,98.435 1218,0 1218,0Z"/>
     </g>
   </svg>
+  <div id="info">
+    <p>
+      Some form of MIDI input is required for entering the chord. You can press <kbd>Space</kbd> or click on the current chord prompt to get a new random chord.
+    </p>
+
+    <div id="options">
+      <fieldset>
+        <legend>Root Accidentals</legend>
+        <span class="option">
+          <input type="checkbox" id="naturals" value="2" oninput="updateSelectedAccidentals(event)" checked>
+          <label for="naturals">♮ Naturals</label>
+        </span>
+        <span class="option">
+          <input type="checkbox" id="flats" value="3" oninput="updateSelectedAccidentals(event)" checked>
+          <label for="flats">♭ Flats</label>
+        </span>
+        <span class="option">
+          <input type="checkbox" id="sharps" value="1" oninput="updateSelectedAccidentals(event)" checked>
+          <label for="sharps">♯ Sharps</label>
+        </span>
+        <span class="option">
+          <input type="checkbox" id="doubleflats" value="4" oninput="updateSelectedAccidentals(event)">
+          <label for="doubleflats">𝄫 Double-Flats</label>
+        </span>
+        <span class="option">
+          <input type="checkbox" id="doublesharps" value="0" oninput="updateSelectedAccidentals(event)">
+          <label for="doublesharps">𝄪 Double-Sharps</label>
+        </span>
+      </fieldset>
+    </div>
+  </div>
 </body>
 </html>

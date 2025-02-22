@@ -4,21 +4,31 @@
   --keyBlack: hsl(0, 0%, 18%);
   --posColor: hsl(120, 73%, 75%);
   --negColor: hsl(0, 73%, 70%);
+  --infoColor: hsl(0, 0%, 65%);
 
   background-color: var(--bgColor);
   color: hsl(0, 0%, 90%);
-  font-family: system-ui;
+  font-family: system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 #chordArea {
-  font-size: 30pt;
-  margin: 1em;
+  position: relative;
+  padding: 10px;
+  font-size: 40pt;
+  margin-block: 1em;
+  margin-inline: auto;
+  width: clamp(33%, 20rem, 100%);
+  border-block: 2px solid var(--keyBlack);
+  text-align: center;
 }
-button {
-  background: none;
-  border: none;
-  font-size: inherit;
+#chordPrompt {
   cursor: pointer;
+  font-weight: bold;
+  user-select: none;
 }
 
 .whiteKey, .blackKey {
@@ -38,4 +48,84 @@ button {
 
 .key[data-pressed="neg"] {
   fill: var(--negColor) !important;
+}
+
+#info {
+  width: clamp(40%, 20rem, 100%);
+  padding-inline: 1em;
+  margin-inline: auto;
+  border-inline: 2px solid var(--keyBlack);
+  color: var(--infoColor);
+  font-weight: lighter;
+}
+
+.selections {
+  display: inline-block;
+  min-width: fit-content;
+}
+
+h2 {
+  font-weight: normal;
+  text-align: center;
+  margin-block-start: 1em;
+  margin-block-end: 0.5em;
+}
+
+kbd {
+  font-weight: normal;
+  background-color: hsl(0, 0%, 15%);
+  border-radius: 0.25em;
+  padding-inline: 0.25em;
+  padding-block: 0.1em;
+}
+
+#options {
+  line-height: 2;
+}
+
+fieldset {
+  margin-block: 1em;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0.5em;
+  border: 1px solid var(--keyBlack);
+  border-radius: 0.5em;
+  text-align: center;
+}
+legend {
+  font-weight: normal;
+}
+
+.option {
+  white-space: nowrap;
+  margin-right: 1em;
+}
+.option > input,
+.option > label {
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  margin-inline: 0;
+}
+
+input[type="color" i] {
+  appearance: none;
+  font-size: inherit;
+  inline-size: 1.75ex;
+  block-size: 1.75ex;
+  background-color: transparent;
+  border: 1px solid var(--infoColor);
+  border-radius: 5%;
+  border-image: none;
+  padding: 0;
+}
+input[type="color" i]::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border-radius: 5%;
+  background-color: transparent;
+}
+input[type="color" i]::-webkit-color-swatch,
+input[type="color" i]::-moz-color-swatch {
+  border-radius: 5%;
 }

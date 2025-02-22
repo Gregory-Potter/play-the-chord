@@ -3,7 +3,21 @@ let midi;
 const lowestNoteNum = 21;
 const highestNoteNum = 108;
 
-const noteNames = ["C","D♭","D","E♭","E","F","G♭","G","A♭","A","B♭","B"];
+const accidentals = ["𝄪","♯","♮","♭","𝄫"];
+const noteNames = [
+  [null,"B♯","C" ,null,"D𝄫"],
+  ["B𝄪","C♯",null,"D♭",null],
+  ["C𝄪",null,"D" ,null,"E𝄫"],
+  [null,"D♯",null,"E♭","F𝄫"],
+  ["D𝄪",null,"E" ,"F♭",null],
+  [null,"E♯","F" ,null,"G𝄫"],
+  ["E𝄪","F♯",null,"G♭",null],
+  ["F𝄪",null,"G" ,null,"A𝄫"],
+  [null,"G♯",null,"A♭",null],
+  ["G𝄪",null,"A" ,null,"B𝄫"],
+  [null,"A♯",null,"B♭","C𝄫"],
+  ["A𝄪",null,"B" ,"C♭",null]
+];
 const qualities = [
   {label:"", offsets:[0,4,7]},
   {label:"m", offsets:[0,3,7]},
@@ -17,27 +31,29 @@ const qualities = [
   {label:"mM7", offsets:[0,3,7,11]},
   {label:"dim7", offsets:[0,3,6,9]},
   {label:"ø", offsets:[0,3,6,10]},
-]
-const chords = [];
+];
 
-let chordPrompt_e;
+let chords = [];
 let chord;
 
+let chordPrompt_e;
+
+let selectedAccidentals = new Set();
+
 async function initialize() {
-  for (let i=0; i<noteNames.length; i++) {
-    for (let quality of qualities) {
-      const c = {};
-      c.name = noteNames[i] + quality.label;
-      c.checks = [];
-      for (let offset of quality.offsets) {
-        c.checks.push((i + offset) % 12);
-      }
-      chords.push(c);
-    }
-  }
+  if (document.getElementById("doublesharps").checked) selectedAccidentals.add(0);
+  if (document.getElementById("sharps").checked) selectedAccidentals.add(1);
+  if (document.getElementById("naturals").checked) selectedAccidentals.add(2);
+  if (document.getElementById("flats").checked) selectedAccidentals.add(3);
+  if (document.getElementById("doubleflats").checked) selectedAccidentals.add(4);
+  
+  generateChords();
 
   chordPrompt_e = document.getElementById("chordPrompt");
   getRandomChord();
+  document.addEventListener('keydown', (event) => {
+    if (event.code === 'Space') getRandomChord();
+  });
 
   try {
     midi = await navigator.requestMIDIAccess();
@@ -51,10 +67,31 @@ async function initialize() {
   }
 }
 
+function generateChords() {
+  chords = [];
+
+  for (let i=0; i<noteNames.length; i++) {
+    for (let a of selectedAccidentals) {
+      if (noteNames[i][a] == null) continue;
+      for (let quality of qualities) {
+        const c = {};
+        c.name = noteNames[i][a] + quality.label;
+        c.rootAccidental = accidentals[a];
+        c.checks = [];
+        for (let offset of quality.offsets) {
+          c.checks.push((i + offset) % 12);
+        }
+        chords.push(c);
+      }
+    }
+  }
+}
+
 function getRandomChord() {
   const i = Math.round((chords.length-1) *  Math.random());
   chord = chords[i];
   chordPrompt_e.innerText = chord.name;
+  console.log(chord);
 }
 
 function receivedMidiMessage(msg) {
@@ -85,4 +122,11 @@ function checkNote(noteNum) {
     if (noteNum % 12 == check) return true;
   }
   return false;
+}
+
+function updateSelectedAccidentals(e) {
+  if (e.target.checked) selectedAccidentals.add(Number(e.target.value));
+  else selectedAccidentals.delete(Number(e.target.value));
+  console.log(selectedAccidentals);
+  generateChords();
 }
