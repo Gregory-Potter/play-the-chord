@@ -45,9 +45,16 @@
 .key[data-pressed="pos"] {
   fill: var(--posColor) !important;
 }
-
 .key[data-pressed="neg"] {
   fill: var(--negColor) !important;
+}
+.key[data-pressed="pos"].whiteKey,
+.key[data-pressed="neg"].whiteKey {
+  filter: url("#lightWhiteKeys");
+}
+.key[data-pressed="pos"].blackKey,
+.key[data-pressed="neg"].blackKey {
+  filter: url("#lightBlackKeys");
 }
 
 .selections {
@@ -56,9 +63,8 @@
 }
 
 h2 {
-  font-weight: normal;
   text-align: center;
-  margin-block-start: 1em;
+  margin-block-start: 0;
   margin-block-end: 0.5em;
 }
 
@@ -79,6 +85,10 @@ button {
   border-radius: 0.5em;
   padding-block: 0.3em;
   padding-inline: 0.5em;
+  cursor: pointer;
+}
+button:hover {
+  color: white;
 }
 #iButton {
   position: absolute;
