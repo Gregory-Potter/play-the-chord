@@ -26,9 +26,13 @@
   text-align: center;
 }
 #chordPrompt {
-  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
   font-weight: bold;
-  user-select: none;
+  line-height: 1lh;
+  background: none;
+  border: none;
+  width: 100%;
 }
 
 .whiteKey, .blackKey {
@@ -74,33 +78,6 @@ kbd {
   border-radius: 0.25em;
   padding-inline: 0.25em;
   padding-block: 0.1em;
-}
-
-button {
-  display: block;
-  margin-inline: auto;
-  background-color: var(--keyBlack);
-  color: var(--infoColor);
-  border: 1px solid var(--keyWhite);
-  border-radius: 0.5em;
-  padding-block: 0.3em;
-  padding-inline: 0.5em;
-  cursor: pointer;
-}
-button:hover {
-  color: white;
-}
-#iButton {
-  position: absolute;
-  top: 9.5rem;
-  left: 50%;
-  translate: -50%;
-  margin: 0;
-  border-radius: 50%;
-  font-family: serif;
-  font-size: large;
-  padding-block: 0;
-  padding-inline: 0.25em;
 }
 
 dialog {
@@ -189,10 +166,51 @@ input[type="color" i]::-moz-color-swatch {
 }
 
 #lettersOptions{
-  max-width: 20em;
+  max-width: 21em;
   margin-inline: auto;
 }
 #accidentalsOptions {
   max-width: 17.5em;
   margin-inline: auto;
+}
+
+button {
+  background-color: var(--keyBlack);
+  color: white;
+  border-radius: 0.5em;
+  padding: 0.3em;
+  padding-inline: 0.6em;
+  cursor: pointer;
+}
+
+.ok {
+  display: block;
+  margin-inline: auto;
+}
+
+#controls {
+  margin: 1em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1em;
+  font-size: 200%;
+}
+.icon {
+  width: 1em;
+  height: 1em;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  font-size: inherit;
+  cursor: pointer;
+}
+.icon > svg {
+  fill: var(--keyWhite);
+}
+.icon:hover > svg,
+.icon:focus-visible > svg {
+  fill: white;
 }

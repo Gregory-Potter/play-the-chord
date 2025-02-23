@@ -4,12 +4,20 @@ let chords = [];
 let currentChord;
 
 let chordPrompt_e;
+let lettersOptions_e;
+let accidentalsOptions_e;
+let qualitiesOptions_e;
 
 const selectedLetters = new Set([0,1,2,3,4,5,6]);
 const selectedAccidentals = new Set([0,1,2]);
 const selectedQualities = new Set([0,1,2,3,4,5]);
 
+//#region Initialization
 async function initialize() {
+  lettersOptions_e = document.getElementById("lettersOptions");
+  accidentalsOptions_e = document.getElementById("accidentalsOptions");
+  qualitiesOptions_e = document.getElementById("qualitiesOptions");
+
   buildLettersOptions();
   buildAccidentalsOptions();
   buildQualitiesOptions();
@@ -18,12 +26,6 @@ async function initialize() {
 
   chordPrompt_e = document.getElementById("chordPrompt");
   getRandomChord();
-  document.addEventListener('keydown', (event) => {
-    if (event.code === 'Space') {
-      event.preventDefault();
-      getRandomChord();
-    }
-  });
 
   try {
     midi = await navigator.requestMIDIAccess();
@@ -32,11 +34,13 @@ async function initialize() {
     for (const input of midi.inputs.values()) {
       input.onmidimessage = receivedMidiMessage;
     }
-  } catch(e) {
-    console.log(e);
+  } catch(error) {
+    console.log(error);
   }
 }
+//#endregion Initialization
 
+//#region Runtime Functions
 function generateChords() {
   chords = [];
 
@@ -100,137 +104,85 @@ function checkNote(noteNum) {
   return false;
 }
 
-Number.prototype.mod = function(n) {
-  return ((this % n) + n) % n;
-};
+//#region Set Updaters
+function updateSet(set, fieldSet_e, target) {
+  if (target.checked) {
+    set.add(Number(target.value));
+    if (set.size == 2) {
+      const isDisabled = fieldSet_e.querySelector("input[disabled]");
+      isDisabled.disabled = false;
+    }
+  }
+  else {
+    set.delete(Number(target.value));
+    if (set.size == 1) {
+      const remainingChecked = fieldSet_e.querySelector("input:checked");
+      remainingChecked.disabled = true;
+    }
+  }
+  generateChords();
+}
+
+function updateLetters(event) {
+  updateSet(selectedLetters, lettersOptions_e, event.target);
+}
+
+function updateAccidentals(event) {
+  updateSet(selectedAccidentals, accidentalsOptions_e, event.target);
+}
+
+function updateQualities(event) {
+  updateSet(selectedQualities,qualitiesOptions_e, event.target);
+}
+//#endregion Set Updaters
+//#endregion Runtime Functions
 
 //#region HTML Builders
+function checkboxString(id, value, oninput, checked, label) {
+  const str =
+  `<span class="option">` +
+      `<input type="checkbox" id="${id}" value="${value}" oninput="${oninput}"${checked}>` +
+      `<label for="${id}">${label}</label>` +
+  `</span>`;
+  return str;
+}
+
 function buildLettersOptions() {
-  const fieldset = document.getElementById("lettersOptions");
+  let htmlString = "";
   for (let i=0; i<letters.length; i++) {
     const letter = letters[i];
     const id = "note" + letter.symbol;
-
-    const span = document.createElement("span");
-    span.className = "option";
-
-    const input = document.createElement("input");
-    input.setAttribute("type", "checkbox");
-    input.setAttribute("id", id);
-    input.setAttribute("value", i);
-    input.checked = selectedLetters.has(i);
-    input.oninput = function(e) {
-      if (e.target.checked) {
-        selectedLetters.add(Number(e.target.value));
-        if (selectedLetters.size == 2) {
-          const isDisabled = document.querySelector("#lettersOptions input[disabled]");
-          isDisabled.disabled = false;
-        }
-      }
-      else {
-        selectedLetters.delete(Number(e.target.value));
-        if (selectedLetters.size == 1) {
-          const remainingChecked = document.querySelector("#lettersOptions input:checked");
-          remainingChecked.disabled = true;
-        }
-      }
-      generateChords();
-    };
-    span.appendChild(input);
-
-    const label = document.createElement("label");
-    label.setAttribute("for", id);
-    label.innerText = letter.symbol;
-    span.appendChild(label);
-
-    fieldset.appendChild(span);
+    const checked = selectedLetters.has(i) ? " checked": "";
+    const label = letter.symbol;
+    htmlString += checkboxString(id, i, "updateLetters(event)", checked, label);
   }
+  lettersOptions_e.innerHTML += htmlString;
 }
 
 function buildAccidentalsOptions() {
-  const fieldset = document.getElementById("accidentalsOptions");
+  let htmlString = "";
   for (let i=0; i<accidentals.length; i++) {
     const accidental = accidentals[i];
     const id = accidental.name.toLowerCase().replace(/[^\w]/g, "");
-
-    const span = document.createElement("span");
-    span.className = "option";
-
-    const input = document.createElement("input");
-    input.setAttribute("type", "checkbox");
-    input.setAttribute("id", id);
-    input.setAttribute("value", i);
-    input.checked = selectedAccidentals.has(i);
-    input.oninput = function(e) {
-      if (e.target.checked) {
-        selectedAccidentals.add(Number(e.target.value));
-        if (selectedAccidentals.size == 2) {
-          const isDisabled = document.querySelector("#accidentalsOptions input[disabled]");
-          isDisabled.disabled = false;
-        }
-      }
-      else {
-        selectedAccidentals.delete(Number(e.target.value));
-        if (selectedAccidentals.size == 1) {
-          const remainingChecked = document.querySelector("#accidentalsOptions input:checked");
-          remainingChecked.disabled = true;
-        }
-      }
-      generateChords();
-    };
-    span.appendChild(input);
-
-    const label = document.createElement("label");
-    label.setAttribute("for", id);
-    label.innerText = accidental.symbol + " " + accidental.name;
-    span.appendChild(label);
-
-    fieldset.appendChild(span);
+    const checked = selectedAccidentals.has(i) ? " checked": "";
+    const label = `${accidental.symbol} ${accidental.name}`;
+    htmlString += checkboxString(id, i, "updateAccidentals(event)", checked, label);
   }
+  accidentalsOptions_e.innerHTML += htmlString;
 }
 
 function buildQualitiesOptions() {
-  const fieldset = document.getElementById("qualitiesOptions");
+  let htmlString = "";
   for (let i=0; i<qualities.length; i++) {
     const quality = qualities[i];
     const id = quality.name.toLowerCase().replace(/[^\w]/g, "");
-
-    const span = document.createElement("span");
-    span.className = "option";
-
-    const input = document.createElement("input");
-    input.setAttribute("type", "checkbox");
-    input.setAttribute("id", id);
-    input.setAttribute("value", i);
-    input.checked = selectedQualities.has(i);
-    input.oninput = function(e) {
-      if (e.target.checked) {
-        selectedQualities.add(Number(e.target.value));
-        if (selectedQualities.size == 2) {
-          const isDisabled = document.querySelector("#qualitiesOptions input[disabled]");
-          isDisabled.disabled = false;
-        }
-      }
-      else {
-        selectedQualities.delete(Number(e.target.value));
-        if (selectedQualities.size == 1) {
-          const remainingChecked = document.querySelector("#qualitiesOptions input:checked");
-          remainingChecked.disabled = true;
-        }
-      }
-      generateChords();
-    };
-    span.appendChild(input);
-
-    const label = document.createElement("label");
-    label.setAttribute("for", id);
-    label.innerText = quality.name;
-    span.appendChild(label);
-
-    fieldset.appendChild(span);
+    const checked = selectedQualities.has(i) ? " checked": "";
+    const label = quality.name;
+    htmlString += checkboxString(id, i, "updateQualities(event)", checked, label);
   }
+  qualitiesOptions_e.innerHTML += htmlString;
 }
-//#endregion
+//#endregion HTML Builders
 
 //#region Source Data
 const lowestNoteNum = 21;
@@ -266,4 +218,8 @@ const qualities = [
   {name: "Diminished 7", suffix:"dim7", offsets:[0,3,6,9]},
   {name: "Half-Diminished 7", suffix:"ø", offsets:[0,3,6,10]},
 ];
-//#endregion
+//#endregion Source Data
+
+Number.prototype.mod = function(n) {
+  return ((this % n) + n) % n;
+};

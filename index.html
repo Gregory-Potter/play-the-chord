@@ -8,9 +8,8 @@
   <title>Play-The-Chord</title>
 </head>
 <body onload="initialize()">
-  <button id="iButton" onclick="document.getElementById('instructions').showModal()">ⓘ</button>
   <div id="chordArea">
-    <span id="chordPrompt" onclick="getRandomChord()"></span>
+    <button id="chordPrompt" onclick="getRandomChord()"></button>
   </div>
   <svg width="100%" height="100%" viewBox="0 0 1218 120" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
     <defs>
@@ -136,26 +135,60 @@
       <path id="n108" data-name="C8" class="key whiteKey" d="M1218,0L1195,0L1195,117C1195,117.796 1195.32,118.559 1195.88,119.121C1196.44,119.684 1197.2,120 1198,120C1202.41,120 1210.59,120 1215,120C1215.8,120 1216.56,119.684 1217.12,119.121C1217.68,118.559 1218,117.796 1218,117C1218,98.435 1218,0 1218,0Z"/>
     </g>
   </svg>
-  <div id="info">
-    <div id="options">
-      <fieldset id="lettersOptions">
-        <legend>Root Letters</legend>
-      </fieldset>
-      <fieldset id="accidentalsOptions">
-        <legend>Root Accidentals</legend>
-      </fieldset>
-      <fieldset id="qualitiesOptions">
-        <legend>Chord Qualities</legend>
-      </fieldset>
-    </div>
+  <div id="controls">
+    <button class="icon" onclick="document.getElementById('infoDialog').showModal()">
+      <svg width="100%" height="100%" viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+        <path id="circle" d="M128,0C57.355,0 0,57.355 0,128C0,198.645 57.355,256 128,256C198.645,256 256,198.645 256,128C256,57.355 198.645,0 128,0ZM128,16C189.814,16 240,66.186 240,128C240,189.814 189.814,240 128,240C66.186,240 16,189.814 16,128C16,66.186 66.186,16 128,16Z"/>
+        <path id="symbol" d="M145.143,119.429C145.143,136.571 136.571,153.714 136.571,170.857C136.571,188 162.286,170.857 162.286,170.857C156.709,183.168 145.143,213.714 128,213.714C110.857,213.714 110.857,196.571 110.857,188C110.857,170.857 119.429,153.714 119.429,136.571C119.429,119.429 93.714,136.571 93.714,136.571C99.291,124.261 110.857,93.714 128,93.714C145.143,93.714 145.143,110.857 145.143,119.429ZM128,42.286C137.461,42.286 145.143,49.967 145.143,59.429C145.143,68.89 137.461,76.571 128,76.571C118.539,76.571 110.857,68.89 110.857,59.429C110.857,49.967 118.539,42.286 128,42.286Z"/>
+      </svg>
+    </button>
+    <button class="icon" onclick="document.getElementById('lettersDialog').showModal()">
+      <svg width="100%" height="100%" viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+        <path id="circle" d="M128,0C57.355,0 0,57.355 0,128C0,198.645 57.355,256 128,256C198.645,256 256,198.645 256,128C256,57.355 198.645,0 128,0ZM128,16C189.814,16 240,66.186 240,128C240,189.814 189.814,240 128,240C66.186,240 16,189.814 16,128C16,66.186 66.186,16 128,16Z"/>
+        <path id="symbol" d="M210.86,203.127L143.869,203.127L143.869,195.08C149.763,194.702 154.656,193.946 158.548,192.813C162.44,191.679 164.386,190.281 164.386,188.619C164.386,187.938 164.31,187.107 164.159,186.125C164.008,185.142 163.781,184.273 163.479,183.518L150.103,147.472L93.768,147.472C91.652,152.762 89.933,157.371 88.611,161.301C87.288,165.23 86.098,168.858 85.04,172.183C84.058,175.432 83.377,178.077 83,180.117C82.622,182.158 82.433,183.82 82.433,185.105C82.433,188.127 84.813,190.47 89.574,192.132C94.335,193.795 99.7,194.777 105.67,195.08L105.67,203.127L45.14,203.127L45.14,195.08C47.105,194.928 49.561,194.494 52.508,193.776C55.455,193.058 57.874,192.095 59.763,190.886C62.785,188.845 65.128,186.71 66.79,184.481C68.453,182.252 70.078,179.173 71.665,175.243C79.75,155.067 88.667,132.396 98.415,107.233C108.164,82.069 116.854,59.663 124.486,40.015L133.554,40.015L187.169,178.757C188.303,181.704 189.587,184.085 191.023,185.898C192.459,187.712 194.461,189.488 197.031,191.226C198.769,192.284 201.036,193.171 203.832,193.889C206.628,194.607 208.97,195.004 210.86,195.08L210.86,203.127ZM146.023,137.384L121.652,75.041L97.735,137.384L146.023,137.384Z"/>
+      </svg>
+    </button>
+    <button class="icon" onclick="document.getElementById('accidentalsDialog').showModal()">
+      <svg width="100%" height="100%" viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+        <path id="circle" d="M128,0C57.355,0 -0,57.355 -0,128C-0,198.645 57.355,256 128,256C198.645,256 256,198.645 256,128C256,57.355 198.645,0 128,0ZM128,16C189.814,16 240,66.186 240,128C240,189.814 189.814,240 128,240C66.186,240 16,189.814 16,128C16,66.186 66.186,16 128,16Z"/>
+        <path id="symbol" d="M113.917,43.439L106.115,98.957L178.79,74.548L160.107,207.488C154.378,209.807 148.345,211.524 142.083,212.561L149.885,157.043L77.21,181.452L95.893,48.512C101.622,46.193 107.655,44.476 113.917,43.439ZM101.94,128.665L99.554,145.641L154.06,127.335L156.446,110.359L101.94,128.665Z"/>
+      </svg>
+    </button>
+    <button class="icon" onclick="document.getElementById('qualitiesDialog').showModal()">
+      <svg width="100%" height="100%" viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+        <path id="circle" d="M128,0C57.355,0 -0,57.355 -0,128C-0,198.645 57.355,256 128,256C198.645,256 256,198.645 256,128C256,57.355 198.645,0 128,0ZM128,16C189.814,16 240,66.186 240,128C240,189.814 189.814,240 128,240C66.186,240 16,189.814 16,128C16,66.186 66.186,16 128,16Z"/>
+        <path id="symbol" d="M172.932,71.755L188.761,55.925C192.844,59.371 196.631,63.158 200.075,67.239L184.245,83.068C194.104,95.39 200,111.012 200,128C200,167.738 167.738,200 128,200C111.012,200 95.39,194.104 83.068,184.245L67.239,200.075C63.156,196.629 59.369,192.842 55.925,188.761L71.755,172.932C61.896,160.61 56,144.988 56,128C56,88.262 88.262,56 128,56C144.988,56 160.61,61.896 172.932,71.755ZM167.12,100.194C172.71,108.04 176,117.639 176,128C176,154.492 154.492,176 128,176C117.639,176 108.04,172.71 100.194,167.12L167.12,100.194ZM155.806,88.88L88.88,155.806C83.29,147.96 80,138.361 80,128C80,101.508 101.508,80 128,80C138.361,80 147.96,83.29 155.806,88.88Z"/>
+      </svg>
+    </button>
   </div>
 
-  <dialog id="instructions">
+  <dialog id="infoDialog">
     <h2>Instructions</h2>
     <p>
-      Some form of MIDI input is required for entering the chord. You can press <kbd>Space</kbd> or click on the current chord prompt to get a new random chord. Correct notes will turn <span class="posColor">green</span>, and incorrect notes will turn <span class="negColor">red</span>.
+      Some form of MIDI input is required for entering the chord.
+      You can click on the current chord prompt to get a new random chord — if it has focus you can use <kbd>Space</kbd> instead.
+      Correct notes will turn <span class="posColor">green</span>, and incorrect notes will turn <span class="negColor">red</span>.
+      You can change what chords are included by checking/unchecking options that are accessed via the other buttons.
     </p>
-    <button onclick="document.getElementById('instructions').close()">Ok</button>
+    <button class="ok" onclick="document.getElementById('infoDialog').close()">Ok</button>
+  </dialog>
+  <dialog id="lettersDialog">
+    <fieldset id="lettersOptions">
+      <legend>Root Letters</legend>
+    </fieldset>
+    <button class="ok" onclick="document.getElementById('lettersDialog').close()">Ok</button>
+  </dialog>
+  <dialog id="accidentalsDialog">
+    <fieldset id="accidentalsOptions">
+      <legend>Root Accidentals</legend>
+    </fieldset>
+    <button class="ok" onclick="document.getElementById('accidentalsDialog').close()">Ok</button>
+  </dialog>
+  <dialog id="qualitiesDialog">
+    <fieldset id="qualitiesOptions">
+      <legend>Chord Qualities</legend>
+    </fieldset>
+    <button class="ok" onclick="document.getElementById('qualitiesDialog').close()">Ok</button>
   </dialog>
 </body>
 </html>
