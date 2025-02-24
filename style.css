@@ -34,6 +34,9 @@
   border: none;
   width: 100%;
 }
+#chordPrompt[data-playing="true"] {
+  text-shadow: 0 0 1em var(--posColor), 0 0 0.5em var(--posColor);
+}
 
 .whiteKey, .blackKey {
   stroke: var(--bgColor);

@@ -12,6 +12,8 @@ const selectedLetters = new Set([0,1,2,3,4,5,6]);
 const selectedAccidentals = new Set([0,1,2]);
 const selectedQualities = new Set([0,1,2,3,4,5]);
 
+const pressedNotes = new Set();
+
 //#region Initialization
 async function initialize() {
   lettersOptions_e = document.getElementById("lettersOptions");
@@ -26,6 +28,13 @@ async function initialize() {
 
   chordPrompt_e = document.getElementById("chordPrompt");
   getRandomChord();
+
+  try {
+    await navigator.wakeLock.request('screen');
+    console.log("Screen Wake Lock activated.");
+  } catch (error) {
+    console.log(error);
+  }
 
   try {
     midi = await navigator.requestMIDIAccess();
@@ -68,9 +77,16 @@ function generateChords() {
 }
 
 function getRandomChord() {
-  const i = Math.round((chords.length-1) *  Math.random());
+  let i = Math.round((chords.length-1) *  Math.random());
+  while (chords[i] == currentChord) {
+    i = Math.round((chords.length-1) *  Math.random());
+  }
   currentChord = chords[i];
   chordPrompt_e.innerText = currentChord.name;
+  checkChord();
+  for (const noteNum of pressedNotes) {
+    checkNote(noteNum);
+  }
   console.log(currentChord);
 }
 
@@ -85,23 +101,51 @@ function receivedMidiMessage(msg) {
     console.log(`NoteOn note: ${noteNum}, velocity: ${velocity}`);
     if (noteNum >= lowestNoteNum && noteNum <= highestNoteNum) {
       const key_e = document.getElementById("n" + noteNum);
-      if (checkNote(noteNum)) key_e.dataset.pressed = "pos";
-      else key_e.dataset.pressed = "neg";
+      checkNote(noteNum);
     }
+    pressedNotes.add(noteNum);
+    checkChord();
   } else if (cmd === NOTE_OFF) {
     console.log(`NoteOff note: ${noteNum}`);
     if (noteNum >= lowestNoteNum && noteNum <= highestNoteNum) {
       const key_e = document.getElementById("n" + noteNum);
       key_e.dataset.pressed = "";
     }
+    pressedNotes.delete(noteNum);
+    checkChord()
   }
 }
 
 function checkNote(noteNum) {
-  for (check of currentChord.checks) {
-    if (noteNum.mod(12) == check) return true;
+  const key_e = document.getElementById("n" + noteNum);
+  for (const check of currentChord.checks) {
+    if (noteNum.mod(12) == check) {
+      key_e.dataset.pressed = "pos";
+      return true;
+    }
   }
+  key_e.dataset.pressed = "neg";
   return false;
+}
+
+function checkChord() {
+  checks: for (const check of currentChord.checks) {
+    for (const noteNum of pressedNotes) {
+      if (noteNum.mod(12) == check) continue checks;
+    }
+    chordPrompt_e.dataset.playing = "false";
+    return false;
+  }
+  notes: for (const noteNum of pressedNotes) {
+    for (const check of currentChord.checks) {
+      if (noteNum.mod(12) == check) continue notes;
+    }
+    chordPrompt_e.dataset.playing = "false";
+    return false;
+  }
+  chordPrompt_e.dataset.playing = "true";
+  setTimeout(getRandomChord, 750);
+  return true;
 }
 
 //#region Set Updaters
